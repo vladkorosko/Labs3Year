@@ -8,7 +8,8 @@
 #include <sstream>
 #include <string>
 #include <thread>
-//#include <win>
 #include <Windows.h>
+
+#include "trialfuncs.hpp"
 
 void userInterface();
