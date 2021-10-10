@@ -5,7 +5,6 @@ using namespace std;
 
 int main()
 {
-    f();
     userInterface();
     return 0;
 }
