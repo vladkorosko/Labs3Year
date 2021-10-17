@@ -7,11 +7,11 @@
 using namespace std;
 
 double f1(double x) {
-	return x*x*x + 3 * x*x - x - 3;
+	return x * x * x - 7 * x * x + 7 * x + 15;
 }
 
 double f2(double x) {
-	return x * x * x + x * x - 4 * x - 4;
+	return x * x * x - 5 * x * x - 4 * x + 20;
 }
 
 double f3(double x) {
@@ -19,11 +19,11 @@ double f3(double x) {
 }
 
 double df1(double x) {
-	return 3 * x*x + 6 * x - 1;
+	return 3 * x*x - 14 * x + 7;
 }
 
 double df2(double x) {
-	return 3 * x * x + 2 * x - 4;
+	return 3 * x * x - 10 * x - 4;
 }
 
 double df3(double x) {
@@ -31,11 +31,11 @@ double df3(double x) {
 }
 
 double ddf1(double x) {
-	return 6 * x + 6;
+	return 6 * x - 14;
 }
 
 double ddf2(double x) {
-	return 6 * x + 2;
+	return 6 * x - 10;
 }
 
 double ddf3(double x) {
@@ -149,20 +149,20 @@ bool crossLineMethod(double(f)(double), double(df)(double), double& a_1, double 
 }
 
 int main() {
-	double a1 = 0.5;
-	double a2 = 1.75;
+	double a1 = -3.0;
+	double a2 = -1.25;
 	double a3_0 = -3.0;
 	double a3_1 = -2.5;
-	double b1 = 2.0;
-	double b2 = 2.25;
+	double b1 = -1.0;
+	double b2 = -0.75;
 	double b3 = -1;
 	
-	if (relaxMethod(f1, df1, a1, b1))
+	if (relaxMethod(f3, df3, a1, b1))
 		cout << endl << "Relax method result:  x = " << a1 << "\n\n";
 
-	if (newtonMethod(f2, df2, ddf2, a2, b2))
+	if (newtonMethod(f1, df1, ddf1, a2, b2))
 		cout << endl << "Newton method result:  x = " << a2 << "\n\n";
 
-	if (crossLineMethod(f3, df3, a3_1, a3_0, b3))
+	if (crossLineMethod(f2, df2, a3_1, a3_0, b3))
 		cout << endl << "Cross line method result:  x = " << a3_1 << "\n\n";
 }
