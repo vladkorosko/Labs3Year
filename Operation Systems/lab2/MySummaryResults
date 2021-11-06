@@ -1,17 +1,19 @@
-Scheduling Type: Batch (Nonpreemptive)
+Scheduling Type: Full Process If It Possible
 Scheduling Name: Earliest Deadline First
-Simulation Run Time: 11796
+Simulation Run Time: 10000
 Mean: 1100
 Standard Deviation: 510
-Process #	CPU Time	IO Blocking	CPU Completed	Deadline	CPU Blocked
-0		846 (ms)	200 (ms)	3368 (ms)	4230 (ms)	4 times
-1		1261 (ms)	500 (ms)	1261 (ms)	3783 (ms)	2 times
-2		1261 (ms)	30 (ms)		2522 (ms)	3783 (ms)	42 times
-3		846 (ms)	200 (ms)	4214 (ms)	5707 (ms)	4 times
-4		1261 (ms)	500 (ms)	6736 (ms)	7582 (ms)	2 times
-5		1261 (ms)	30 (ms)		5475 (ms)	7252 (ms)	42 times
-6		846 (ms)	200 (ms)	7582 (ms)	7678 (ms)	4 times
-7		846 (ms)	200 (ms)	9689 (ms)	10529 (ms)	4 times
-8		1261 (ms)	500 (ms)	10950 (ms)	12365 (ms)	2 times
-9		1261 (ms)	30 (ms)		8843 (ms)	10100 (ms)	42 times
-10		846 (ms)	200 (ms)	11796 (ms)	12874 (ms)	4 times
+Process #	CPU Time	IO Blocking	CPU Started	CPU Completed	Deadline	CPU Blocked
+0			644 (ms)	200 (ms)	1 (ms)			644 (ms)	1716 (ms)	3 times
+1			936 (ms)	500 (ms)	1580 (ms)		2516 (ms)	2003 (ms)	1 times
+2			936 (ms)	30 (ms)		644 (ms)		1580 (ms)	2003 (ms)	31 times
+3			644 (ms)	200 (ms)	2516 (ms)		3160 (ms)	3432 (ms)	3 times
+4			936 (ms)	500 (ms)	3460 (ms)		4396 (ms)	4006 (ms)	1 times
+5			936 (ms)	30 (ms)		3160 (ms)		5032 (ms)	4006 (ms)	31 times
+6			644 (ms)	200 (ms)	5032 (ms)		5676 (ms)	5148 (ms)	3 times
+7			936 (ms)	500 (ms)	5676 (ms)		6612 (ms)	6009 (ms)	1 times
+8			936 (ms)	30 (ms)		6612 (ms)		7548 (ms)	6009 (ms)	31 times
+9			644 (ms)	200 (ms)	7548 (ms)		8192 (ms)	6864 (ms)	3 times
+10			936 (ms)	500 (ms)	8192 (ms)		9128 (ms)	8012 (ms)	1 times
+11			936 (ms)	30 (ms)		9128 (ms)		0 (ms)		8012 (ms)	29 times
+12			644 (ms)	200 (ms)	0 (ms)			0 (ms)		8580 (ms)	0 times

@@ -5,70 +5,71 @@ package org.example.lab2;
 // User modification should occur within the Run() function.
 
 import java.util.List;
-import java.util.Vector;
 import java.io.*;
 
 public class SchedulingAlgorithm {
 
-    public static Results Run(int runtime, List<Process> processVector, Results result) {
+    public static Results Run(int runtime, List<Process> process_vector, Results result) {
         int i;
-        int comptime = 0;
-        int currentProcess = 0;
-        int previousProcess = 0;
-        int size = processVector.size();
+        int comp_time = 0;
+        int current_process = 0;
+        int previous_process;
+        int size = process_vector.size();
         int completed = 0;
-        String resultsFile = "Summary-Processes";
+        String results_file = "Summary-Processes";
 
-        result.schedulingType = "Batch (Nonpreemptive)";
-        result.schedulingName = "First-Come First-Served";
+        result.scheduling_type = "Batch (Nonpreemptive)";
+        result.scheduling_name = "First-Come First-Served";
         try {
-            //BufferedWriter out = new BufferedWriter(new FileWriter(resultsFile));
-            //OutputStream out = new FileOutputStream(resultsFile);
-            PrintStream out = new PrintStream(new FileOutputStream(resultsFile));
-            Process process = (Process) processVector.get(currentProcess);
-            out.println("Process: " + currentProcess + " registered... (" + process.cpu_time + " " +
+            PrintStream out = new PrintStream(new FileOutputStream(results_file));
+            Process process = process_vector.get(current_process);
+            out.println("Process: " + current_process + " registered... (" + process.cpu_time + " " +
                         process.io_blocking + " " + process.cpu_done + " " + process.cpu_done+ ")");
-            while (comptime < runtime) {
+            while (comp_time < runtime) {
                 if (process.cpu_done == process.cpu_time) {
                     completed++;
-                    out.println("Process: " + currentProcess + " completed... (" + process.cpu_time + " " + process.io_blocking + " " + process.cpu_done + " " + process.cpu_done + ")");
+                    out.println("Process: " + current_process + " completed... (" + process.cpu_time + " " +
+                                process.io_blocking + " " + process.cpu_done + " " + process.cpu_done + ")");
                     if (completed == size) {
-                        result.compuTime = comptime;
+                        result.compu_time = comp_time;
                         out.close();
                         return result;
                     }
                     for (i = size - 1; i >= 0; i--) {
-                        process = (Process) processVector.get(i);
+                        process = process_vector.get(i);
                         if (process.cpu_done < process.cpu_time) {
-                            currentProcess = i;
+                            current_process = i;
                         }
                     }
-                    process = (Process) processVector.get(currentProcess);
-                    out.println("Process: " + currentProcess + " registered... (" + process.cpu_time + " " + process.io_blocking + " " + process.cpu_done + " " + process.cpu_done + ")");
+                    process = process_vector.get(current_process);
+                    out.println("Process: " + current_process + " registered... (" + process.cpu_time + " " +
+                                process.io_blocking + " " + process.cpu_done + " " + process.cpu_done + ")");
                 }
                 if (process.io_blocking == process.io_next) {
-                    out.println("Process: " + currentProcess + " I/O blocked... (" + process.cpu_time + " " + process.io_blocking + " " + process.cpu_done + " " + process.cpu_done + ")");
+                    out.println("Process: " + current_process + " I/O blocked... (" + process.cpu_time + " " +
+                                process.io_blocking + " " + process.cpu_done + " " + process.cpu_done + ")");
                     process.num_blocked++;
                     process.io_next = 0;
-                    previousProcess = currentProcess;
+                    previous_process = current_process;
                     for (i = size - 1; i >= 0; i--) {
-                        process = (Process) processVector.get(i);
-                        if (process.cpu_done < process.cpu_time && previousProcess != i) {
-                            currentProcess = i;
+                        process = process_vector.get(i);
+                        if (process.cpu_done < process.cpu_time && previous_process != i) {
+                            current_process = i;
                         }
                     }
-                    process = (Process) processVector.get(currentProcess);
-                    out.println("Process: " + currentProcess + " registered... (" + process.cpu_time + " " + process.io_blocking + " " + process.cpu_done + " " + process.cpu_done + ")");
+                    process = process_vector.get(current_process);
+                    out.println("Process: " + current_process + " registered... (" + process.cpu_time + " " +
+                                process.io_blocking + " " + process.cpu_done + " " + process.cpu_done + ")");
                 }
                 process.cpu_done++;
                 if (process.io_blocking > 0) {
                     process.io_next++;
                 }
-                comptime++;
+                comp_time++;
             }
             out.close();
         } catch (IOException e) { /* Handle exceptions */ }
-        result.compuTime = comptime;
+        result.compu_time = comp_time;
         return result;
     }
 }

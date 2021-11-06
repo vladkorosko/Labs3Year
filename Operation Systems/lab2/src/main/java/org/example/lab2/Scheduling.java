@@ -15,14 +15,14 @@ import java.util.*;
 public class Scheduling {
 
     private static int process_num = 5;
-    private static int meanDev = 1000;
-    private static int standardDev = 100;
+    private static int mean_dev = 1000;
+    private static int standard_dev = 100;
     private static int runtime = 1000;
-    private static final List<Process> processVector = new ArrayList<>();
+    private static final List<Process> process_vector = new ArrayList<>();
     private static Results result = new Results("null","null",0);
-    private static final String resultsFile = "Summary-Results";
+    private static final String results_file = "Summary-Results";
 
-    private static void Init(String file) {
+    private static void init(String file) {
         File f = new File(file);
         String line;
         int cpu_time;
@@ -30,7 +30,6 @@ public class Scheduling {
         double X;
 
         try {
-            //BufferedReader in = new BufferedReader(new FileReader(f));
             DataInputStream in = new DataInputStream(new FileInputStream(f));
             while ((line = in.readLine()) != null) {
                 if (line.startsWith("num_process")) {
@@ -41,12 +40,12 @@ public class Scheduling {
                 if (line.startsWith("mean_dev")) {
                     StringTokenizer st = new StringTokenizer(line);
                     st.nextToken();
-                    meanDev = Common.s2i(st.nextToken());
+                    mean_dev = Common.s2i(st.nextToken());
                 }
                 if (line.startsWith("stand_dev")) {
                     StringTokenizer st = new StringTokenizer(line);
                     st.nextToken();
-                    standardDev = Common.s2i(st.nextToken());
+                    standard_dev = Common.s2i(st.nextToken());
                 }
                 if (line.startsWith("process")) {
                     StringTokenizer st = new StringTokenizer(line);
@@ -56,9 +55,9 @@ public class Scheduling {
                     while (X == -1.0) {
                         X = Common.R1();
                     }
-                    X = X * standardDev;
-                    cpu_time = (int) X + meanDev;
-                    processVector.add(new Process(cpu_time, io_blocking, 0, 0, 0));
+                    X = X * standard_dev;
+                    cpu_time = (int) X + mean_dev;
+                    process_vector.add(new Process(cpu_time, io_blocking, 0, 0, 0));
                 }
                 if (line.startsWith("runtime")) {
                     StringTokenizer st = new StringTokenizer(line);
@@ -72,11 +71,11 @@ public class Scheduling {
 
     private static void debug() {
         System.out.println("process_num " + process_num);
-        System.out.println("mean_dev " + meanDev);
-        System.out.println("stand_dev " + standardDev);
-        int size = processVector.size();
+        System.out.println("mean_dev " + mean_dev);
+        System.out.println("stand_dev " + standard_dev);
+        int size = process_vector.size();
         for (int i = 0; i < size; i++) {
-            Process process = (Process) processVector.get(i);
+            Process process = process_vector.get(i);
             System.out.println("process " + i + " " + process.cpu_time + " " + process.io_blocking + " " + process.cpu_done + " " + process.num_blocked);
         }
         System.out.println("runtime " + runtime);
@@ -97,34 +96,34 @@ public class Scheduling {
             System.exit(-1);
         }
         System.out.println("Working...");
-        Init("scheduling.conf");
+        init("scheduling.conf");
 
         int i;
-        if (processVector.size() < process_num) {
+        if (process_vector.size() < process_num) {
             i = 0;
-            while (processVector.size() < process_num) {
+            while (process_vector.size() < process_num) {
                 double X = Common.R1();
                 while (X == -1.0) {
                     X = Common.R1();
                 }
-                X = X * standardDev;
-                int cpu_time = (int) X + meanDev;
-                processVector.add(new Process(cpu_time,i*100,0,0,0));
+                X = X * standard_dev;
+                int cpu_time = (int) X + mean_dev;
+                process_vector.add(new Process(cpu_time,i*100,0,0,0));
                 i++;
             }
         }
-        result = SchedulingAlgorithm.Run(runtime, processVector, result);
+        result = SchedulingAlgorithm.Run(runtime, process_vector, result);
         try {
             //BufferedWriter out = new BufferedWriter(new FileWriter(resultsFile));
-            PrintStream out = new PrintStream(new FileOutputStream(resultsFile));
-            out.println("Scheduling Type: " + result.schedulingType);
-            out.println("Scheduling Name: " + result.schedulingName);
-            out.println("Simulation Run Time: " + result.compuTime);
-            out.println("Mean: " + meanDev);
-            out.println("Standard Deviation: " + standardDev);
+            PrintStream out = new PrintStream(new FileOutputStream(results_file));
+            out.println("Scheduling Type: " + result.scheduling_type);
+            out.println("Scheduling Name: " + result.scheduling_name);
+            out.println("Simulation Run Time: " + result.compu_time);
+            out.println("Mean: " + mean_dev);
+            out.println("Standard Deviation: " + standard_dev);
             out.println("Process #\tCPU Time\tIO Blocking\tCPU Completed\tCPU Blocked");
-            for (i = 0; i < processVector.size(); i++) {
-                Process process = (Process) processVector.get(i);
+            for (i = 0; i < process_vector.size(); i++) {
+                Process process = process_vector.get(i);
                 out.print(i);
                 if (i < 100) { out.print("\t\t"); } else { out.print("\t"); }
                 out.print(process.cpu_time);

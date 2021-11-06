@@ -7,23 +7,21 @@ package org.example.lab2;
 // is where the summary results are written, and Summary-Processes
 // is where the process scheduling summary is written.
 
-// Created by Alexander Reeder, 2001 January 06
-
 import java.io.*;
 import java.util.*;
 
 public class MyScheduling
 {
     private static int process_num = 5;
-    private static int meanDev = 1000;
-    private static int standardDev = 100;
+    private static int mean_dev = 1000;
+    private static int standard_dev = 100;
     private static int runtime = 1000;
-    private static final List<sProcess> processVector = new ArrayList<>();
+    private static final List<sProcess> process_vector = new ArrayList<>();
     private static Results result = new Results("null","null",0);
-    private static final String resultsFile = "MySummaryResults";
+    private static final String results_file = "MySummaryResults";
     private static final String config_path = "scheduling.conf";
 
-    private static void Init(String file) {
+    private static void init(String file) {
         File f = new File(file);
         String line;
         int cpu_time;
@@ -42,12 +40,12 @@ public class MyScheduling
                 if (line.startsWith("mean_dev")) {
                     StringTokenizer st = new StringTokenizer(line);
                     st.nextToken();
-                    meanDev = Common.s2i(st.nextToken());
+                    mean_dev = Common.s2i(st.nextToken());
                 }
                 if (line.startsWith("stand_dev")) {
                     StringTokenizer st = new StringTokenizer(line);
                     st.nextToken();
-                    standardDev = Common.s2i(st.nextToken());
+                    standard_dev = Common.s2i(st.nextToken());
                 }
                 if (line.startsWith("process")) {
                     StringTokenizer st = new StringTokenizer(line);
@@ -58,9 +56,9 @@ public class MyScheduling
                         X = Common.R1();
                     }
                     Random random = new Random(System.currentTimeMillis());
-                    X = X * standardDev;
-                    cpu_time = (int) X + meanDev;
-                    processVector.add(new sProcess(cpu_time, io_blocking, 0, 0, 0,
+                    X = X * standard_dev;
+                    cpu_time = (int) X + mean_dev;
+                    process_vector.add(new sProcess(cpu_time, io_blocking, 0, 0, 0,
                             cpu_time * 3 + (random.nextInt()%(cpu_time) + 1)));
                 }
                 if (line.startsWith("runtime")) {
@@ -74,26 +72,17 @@ public class MyScheduling
     }
 
     private static void moreProcesses(){
-        int i = 0;
-        int size = processVector.size();
-        for (sProcess p : processVector) {
-            if (i < p.cpu_time) {
-                i = p.cpu_time;
+        int size = process_vector.size();
+        for (int i = 0; i < size; i++) {
+            int deadline = process_vector.get(i).deadline;
+            int k = 2;
+            while (k * deadline < runtime){
+                sProcess p = process_vector.get(i);
+                p.deadline = deadline;
+                process_vector.add(new sProcess(p.cpu_time, p.io_blocking,
+                        0, 0, 0, k * deadline));
+                k++;
             }
-        }
-        i++;
-        Random random = new Random(System.currentTimeMillis());
-        while (i < 5000) {
-            for (int j = 0; j < size; j++){
-                sProcess p = processVector.get(j);
-                if (i % p.cpu_time == 0){
-
-                    p.deadline = i;
-                    processVector.add(new sProcess(p.cpu_time, p.io_blocking, 0, 0, 0,
-                            i * 3 + (random.nextInt()%(p.cpu_time) + 1)));
-                }
-            }
-            i++;
         }
     }
 
@@ -113,30 +102,31 @@ public class MyScheduling
             System.exit(-1);
         }
         System.out.println("Working...");
-        Init(config_path);
+        init(config_path);
 
-        moreProcesses();
+        //moreProcesses();
 
-        result = Algorithm.Run(runtime, processVector, result);
+        result = EarliestDeadlineFirstAlgorithm.RunFullProcess(runtime, process_vector, result);
         try {
-            //BufferedWriter out = new BufferedWriter(new FileWriter(resultsFile));
-            PrintStream out = new PrintStream(new FileOutputStream(resultsFile));
-            out.println("Scheduling Type: " + result.schedulingType);
-            out.println("Scheduling Name: " + result.schedulingName);
-            out.println("Simulation Run Time: " + result.compuTime);
-            out.println("Mean: " + meanDev);
-            out.println("Standard Deviation: " + standardDev);
-            out.println("Process #\tCPU Time\tIO Blocking\tCPU Completed\tDeadline\tCPU Blocked");
-            for (int i = 0; i < processVector.size(); i++) {
-                sProcess process = processVector.get(i);
+            PrintStream out = new PrintStream(new FileOutputStream(results_file));
+            out.println("Scheduling Type: " + result.scheduling_type);
+            out.println("Scheduling Name: " + result.scheduling_name);
+            out.println("Simulation Run Time: " + result.compu_time);
+            out.println("Mean: " + mean_dev);
+            out.println("Standard Deviation: " + standard_dev);
+            out.println("Process #\tCPU Time\tIO Blocking\tCPU Started\tCPU Completed\tDeadline\tCPU Blocked");
+            for (int i = 0; i < process_vector.size(); i++) {
+                sProcess process = process_vector.get(i);
                 out.print(i);
-                if (i < 100) { out.print("\t\t"); } else { out.print("\t"); }
+                if (i < 100) { out.print("\t\t\t"); } else { out.print("\t\t"); }
                 out.print(process.cpu_time);
                 if (process.cpu_time < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
                 out.print(process.io_blocking);
                 if (process.io_blocking < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
-                out.print(process.cpu_done);
-                if (process.cpu_done < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
+                out.print(process.start_time);
+                if (process.start_time < 100) { out.print(" (ms)\t\t\t"); } else { out.print(" (ms)\t\t"); }
+                out.print(process.finish_time);
+                if (process.finish_time < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
                 out.print(process.deadline);
                 if (process.deadline < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
                 out.println(process.num_blocked + " times");
