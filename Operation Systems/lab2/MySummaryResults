@@ -4,16 +4,12 @@ Simulation Run Time: 10000
 Mean: 1100
 Standard Deviation: 510
 Process #	CPU Time	IO Blocking	CPU Started	CPU Completed	Deadline	CPU Blocked
-0			644 (ms)	200 (ms)	1 (ms)			644 (ms)	1716 (ms)	3 times
-1			936 (ms)	500 (ms)	1580 (ms)		2516 (ms)	2003 (ms)	1 times
-2			936 (ms)	30 (ms)		644 (ms)		1580 (ms)	2003 (ms)	31 times
-3			644 (ms)	200 (ms)	2516 (ms)		3160 (ms)	3432 (ms)	3 times
-4			936 (ms)	500 (ms)	3460 (ms)		4396 (ms)	4006 (ms)	1 times
-5			936 (ms)	30 (ms)		3160 (ms)		5032 (ms)	4006 (ms)	31 times
-6			644 (ms)	200 (ms)	5032 (ms)		5676 (ms)	5148 (ms)	3 times
-7			936 (ms)	500 (ms)	5676 (ms)		6612 (ms)	6009 (ms)	1 times
-8			936 (ms)	30 (ms)		6612 (ms)		7548 (ms)	6009 (ms)	31 times
-9			644 (ms)	200 (ms)	7548 (ms)		8192 (ms)	6864 (ms)	3 times
-10			936 (ms)	500 (ms)	8192 (ms)		9128 (ms)	8012 (ms)	1 times
-11			936 (ms)	30 (ms)		9128 (ms)		0 (ms)		8012 (ms)	29 times
-12			644 (ms)	200 (ms)	0 (ms)			0 (ms)		8580 (ms)	0 times
+0			766 (ms)	200 (ms)	1 (ms)			766 (ms)	2789 (ms)	3 times
+1			965 (ms)	500 (ms)	1731 (ms)		2696 (ms)	3267 (ms)	1 times
+2			965 (ms)	30 (ms)		766 (ms)		1731 (ms)	3267 (ms)	32 times
+3			766 (ms)	200 (ms)	2789 (ms)		3555 (ms)	5578 (ms)	3 times
+4			965 (ms)	500 (ms)	4520 (ms)		5485 (ms)	6534 (ms)	1 times
+5			965 (ms)	30 (ms)		3555 (ms)		4520 (ms)	6534 (ms)	32 times
+6			766 (ms)	200 (ms)	5578 (ms)		6344 (ms)	8367 (ms)	3 times
+7			965 (ms)	500 (ms)	6534 (ms)		8464 (ms)	9801 (ms)	1 times
+8			965 (ms)	30 (ms)		7034 (ms)		7999 (ms)	9801 (ms)	32 times

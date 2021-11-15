@@ -1,9 +1,9 @@
 Scheduling Type: Batch (Nonpreemptive)
 Scheduling Name: First-Come First-Served
-Simulation Run Time: 3959
+Simulation Run Time: 3331
 Mean: 1100
 Standard Deviation: 510
 Process #	CPU Time	IO Blocking	CPU Completed	CPU Blocked
-0		2111 (ms)	200 (ms)	2111 (ms)	10 times
-1		924 (ms)	500 (ms)	924 (ms)	1 times
-2		924 (ms)	30 (ms)		924 (ms)	30 times
+0		1029 (ms)	200 (ms)	1029 (ms)	5 times
+1		1151 (ms)	500 (ms)	1151 (ms)	2 times
+2		1151 (ms)	30 (ms)		1151 (ms)	38 times
