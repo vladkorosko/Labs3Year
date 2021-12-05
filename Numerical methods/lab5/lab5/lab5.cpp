@@ -6,7 +6,7 @@
 using namespace std;
 
 double f(double x) {
-    return 2 * pow(x, 7) + 3 * pow(x, 6) + 3 * pow(x, 4) - 3;
+    return pow(x, 8) - pow(x, 5) + 3 * pow(x, 3) - 2;
 }
 
 vector<double> calculatePart(double(f)(double), double x_start, double x_end)
@@ -80,5 +80,5 @@ void printResult(const map<pair<double, double>, vector<double>>& result)
 
 int main()
 {
-    printResult(calculateSplaynLinear(f, 3.0, 8.0, 6));
+    printResult(calculateSplaynLinear(f, 1.0, 6.0, 6));
 }

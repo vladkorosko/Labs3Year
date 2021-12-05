@@ -4,13 +4,23 @@ import java.util.List;
 
 public interface ClockReplacementAlgorithm {
     static int replacePage(List<Page> mem,
-                            int virtualPageNumber,
-                            int replacePageNum,
-                            Integer handIndex,
-                            ControlPanel controlPanel) {
-        Page page = mem.get( handIndex );
+                           List<Integer> clock,
+                           int replacePageNum,
+                           Integer handIndex,
+                           ControlPanel controlPanel) {
+        while (true) {
+            if(handIndex == clock.size())
+                handIndex = 0;
+            if (mem.get(clock.get(handIndex)).R == 1){
+                mem.get(clock.get(handIndex)).R = 0;
+            } else {
+                break;
+            }
+            handIndex++;
+        }
+        Page page = mem.get(clock.get(handIndex));
         Page nextPage = mem.get( replacePageNum );
-        controlPanel.removePhysicalPage( handIndex );
+        controlPanel.removePhysicalPage( page.id );
         nextPage.physical = page.physical;
         controlPanel.addPhysicalPage( nextPage.physical , replacePageNum );
         page.inMemTime = 0;
@@ -18,31 +28,7 @@ public interface ClockReplacementAlgorithm {
         page.R = 0;
         page.M = 0;
         page.physical = -1;
-        int counter = handIndex + 1;
-        while (counter != handIndex) {
-            if (mem.get(counter).physical != -1) {
-                if (mem.get(counter).M != 1 && counter != replacePageNum) {
-                    break;
-                }
-            }
-            counter++;
-            if (counter == virtualPageNumber) {
-                counter = 0;
-            }
-        }
-        if (counter != handIndex){
-            return counter;
-        } else {
-            counter++;
-            while(mem.get(counter).physical == -1){
-                counter++;
-                if (counter == virtualPageNumber) {
-                    counter = 0;
-                }
-            }
-            return counter;
-        }
+        clock.set(handIndex, nextPage.id);
+        return handIndex;
     }
-
-
 }

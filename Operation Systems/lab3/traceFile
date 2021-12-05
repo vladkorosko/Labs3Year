@@ -1,0 +1,4 @@
+READ 0 ... okay
+READ 8000 ... okay
+READ 4000 ... okay
+WRITE aaaaa ... page fault
